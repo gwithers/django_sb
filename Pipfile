@@ -13,6 +13,8 @@ django-extensions = "*"
 django-uuid-primary-key = "*"
 "psycopg2" = "*"
 "psycopg2-binary" = "*"
+"flake8" = "*"
+drf-rw-serializers = "*"
 
 [requires]
 python_version = "3.6"

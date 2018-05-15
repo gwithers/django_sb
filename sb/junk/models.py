@@ -20,9 +20,15 @@ class Guild(models.Model):
     wizards = models.ManyToManyField(Wizard)
 
 
+class Campus(models.Model):
+    id = models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)
+    name = models.CharField(max_length=12, null=False)
+
+
 class Building(models.Model):
     id = models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)
     name = models.CharField(max_length=256, null=False)
+    campus = models.ForeignKey(Campus, null=True, related_name="buildings", on_delete=models.SET_NULL)
 
 
 class Floor(models.Model):
