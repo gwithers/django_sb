@@ -3,12 +3,12 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.settings import api_settings
 from junk.models import Building, Floor, Campus
-from junk.serializers import BuildingSerializer, BuildingCreateSerializer, FloorSerializer
+from junk.serializers import BuildingSerializer, BuildingCreateSerializer, FloorSerializer, CampusSerializer
 
 
-# class BuildingViewSet(viewsets.ModelViewSet):
-#     queryset = Building.objects.all()
-#     serializer_class = BuildingSerializer
+class CampusViewSet(viewsets.ModelViewSet):
+    queryset = Campus.objects.all()
+    serializer_class = CampusSerializer
 
 
 class FloorViewSet(viewsets.ModelViewSet):
@@ -20,6 +20,11 @@ class BuildingViewSet(viewsets.ModelViewSet):
     queryset = Building.objects.all()
     serializer_class = BuildingSerializer
     permission_classes = []
+    # prefetch_for_includes = {
+    #     '__all__': [],
+    #     'campus': ['campus'],
+    #     'floors': ['floors']
+    # }
 
     def get_serializer_class(self):
         if self.request.method in ('GET', ):
@@ -48,39 +53,12 @@ class BuildingViewSet(viewsets.ModelViewSet):
         return obj
 
     def create(self, request):
-        #
-        # #print("REQUEST -----------", request.META, "-----------", request.data, "----------")
-        #
-        # campus = None
-        # campus_id = request.data.pop("campus_id", None)
-        # print("%%%%%%%%%%%%%%%%%%%% ", campus_id, "^%%%%%%%%%%%%%%%")
-        # if campus_id:
-        #     print("GETTING CAMPUS FROM", campus_id)
-        #     campus = Campus.objects.filter(pk=campus_id).first()
-        #
-        # if campus is None:
-        #     campus_info = request.data.pop("campus", None)
-        #     print("%%%%%%%%%%%%%%%%%%%% ", campus_info, "^%%%%%%%%%%%%%%%")
-        #     if campus_info is not None:
-        #         print("MAKING CAMPUS FROM", campus_info)
-        #         campus = Campus.objects.create(**campus_info)
-        #
-        #
-        # if campus is None:
-        #     print("BRAND NEW CAMPUS")
-        #     campus = Campus.objects.create()
-        #
         campus = self.find_or_create_related(request, Campus, 'campus', True)
-        request.data['name'] = str(request.data['name']).upper() + "GARBAGE"
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        print("VALIDATES -----------", serializer.validated_data, "----------", serializer.is_valid, "----------")
         building = self.perform_create(serializer)
         building.campus = campus   # find_or_create_related(request, Campus, 'campus', True)
         building.save()
-        # if campus is not None:
-        #     building.campus = campus
-        #     building.save()
         headers = self.get_success_headers(serializer.data)
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 

@@ -15,6 +15,7 @@ django-uuid-primary-key = "*"
 "psycopg2-binary" = "*"
 "flake8" = "*"
 drf-rw-serializers = "*"
+djangorestframework-jsonapi = "*"
 
 [requires]
 python_version = "3.6"
