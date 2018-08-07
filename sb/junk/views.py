@@ -1,9 +1,17 @@
 from rest_framework import viewsets
 from rest_framework import status
+from rest_framework import exceptions
 from rest_framework.response import Response
 from rest_framework.settings import api_settings
 from junk.models import Building, Floor, Campus
 from junk.serializers import BuildingSerializer, BuildingCreateSerializer, FloorSerializer, CampusSerializer
+
+import rest_framework_json_api.metadata
+import rest_framework_json_api.parsers
+import rest_framework_json_api.renderers
+from rest_framework_json_api.pagination import PageNumberPagination
+from rest_framework_json_api.utils import format_drf_errors
+from rest_framework_json_api.views import ModelViewSet, RelationshipView
 
 
 class CampusViewSet(viewsets.ModelViewSet):
@@ -16,15 +24,19 @@ class FloorViewSet(viewsets.ModelViewSet):
     serializer_class = FloorSerializer
 
 
-class BuildingViewSet(viewsets.ModelViewSet):
+class BuildingRelationshipView(RelationshipView):
+    queryset = Building.objects.all()
+
+
+class BuildingViewSet(ModelViewSet):
     queryset = Building.objects.all()
     serializer_class = BuildingSerializer
     permission_classes = []
-    # prefetch_for_includes = {
-    #     '__all__': [],
-    #     'campus': ['campus'],
-    #     'floors': ['floors']
-    # }
+    prefetch_for_includes = {
+        '__all__': [],
+        'campus': ['campus'],
+        'floors': ['floors']
+    }
 
     def get_serializer_class(self):
         if self.request.method in ('GET', ):

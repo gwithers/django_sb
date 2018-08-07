@@ -1,5 +1,7 @@
 from django.db import models
 import uuid as uuid
+from tree.fields import PathField
+from tree.models import TreeModelMixin
 
 
 class Wizard(models.Model):
@@ -38,3 +40,13 @@ class Floor(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class Space(models.Model):
+    id = models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)
+    name = models.CharField(max_length=256, null=False)
+    parent = models.ForeignKey('self', null=True, blank=True, on_delete=models.SET_NULL)
+    path = PathField()
+
+    class Meta:
+        ordering = ('path',)

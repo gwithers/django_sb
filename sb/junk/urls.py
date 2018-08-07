@@ -8,5 +8,10 @@ ROUTER.register(r'buildings', views.BuildingViewSet)
 ROUTER.register(r'floors', views.FloorViewSet)
 
 urlpatterns = [
-    url(r'^', include(ROUTER.urls))
+    url(r'^', include(ROUTER.urls)),
+    url(
+        regex=r'^buildings2/(?P<pk>[^/.]+)/relationships/(?P<related_field>[^/.]+)$',
+        view=views.BuildingRelationshipView.as_view(),
+        name='building-relationships'
+    )
 ]
