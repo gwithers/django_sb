@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django_uuid_primary_key',
     'junk.apps.JunkConfig',
     'tree',
+    'channels'
 ]
 
 MIDDLEWARE = [
@@ -145,6 +146,7 @@ USE_L10N = True
 
 USE_TZ = True
 
+ASGI_APPLICATION = "sb.routing.application"
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.0/howto/static-files/

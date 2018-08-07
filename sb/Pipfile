@@ -7,7 +7,7 @@ name = "pypi"
 
 [packages]
 djangorestframework = "*"
-Django = "*"
+Django = "<2.1"
 django-cors-headers = "*"
 django-extensions = "*"
 django-uuid-primary-key = "*"
@@ -17,6 +17,7 @@ django-uuid-primary-key = "*"
 drf-rw-serializers = "*"
 djangorestframework-jsonapi = "*"
 django-tree = "*"
+channels = "*"
 
 [requires]
 python_version = "3.6"
