@@ -16,6 +16,7 @@ django-uuid-primary-key = "*"
 "flake8" = "*"
 drf-rw-serializers = "*"
 djangorestframework-jsonapi = "*"
+django-tree = "*"
 
 [requires]
 python_version = "3.6"
